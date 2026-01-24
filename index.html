@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RADIO EBENEZER ONLINE | El mensaje de la hora en la red</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" type="image/png" href="img/logo.png" />
+</head>
+<body>
+  <div id="app-loader" class="app-loader" aria-label="Cargando Radio Ebenezer" role="status">
+    <div class="app-loader-inner">
+      <div class="app-loader-logo-circle">
+        <img src="/img/logo.png" alt="Radio Ebenezer" class="app-loader-logo" />
+      </div>
+      <div class="app-loader-ring"></div>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <div id="date-notification" class="date-notification" aria-live="polite" hidden></div>
+    <header class="app-header">
+      <div class="branding">
+        <div class="logo-circle">
+          <img src="/img/logo.png" alt="Radio Ebenezer" class="logo-image" />
+        </div>
+        <div class="branding-text">
+          <span class="app-name">RADIO EBENEZER ONLINE</span>
+          <span class="app-subtitle">El mensaje de la hora en la red</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Banner de culto a ancho completo, fuera de app-main -->
+    <div id="cult-banner" class="cult-banner" aria-live="polite">
+      <p>No te pierdas el culto en vivo este domingo a las <strong>9:00 AM</strong>.</p>
+    </div>
+
+    <main class="app-main">
+      <section id="screen-home" class="screen screen--active" aria-label="Reproductor en vivo">
+
+        <div class="now-playing-card">
+          <div class="cover-art">
+            <div class="cover-gradient"></div>
+            <div class="cover-disc">
+              <div class="cover-disc-inner" id="cover-disc-inner"></div>
+            </div>
+            <div class="turntable-arm" aria-hidden="true"></div>
+          </div>
+          <div class="now-playing-info">
+            <div class="cover-label">
+              <span class="badge-live">EN VIVO</span>
+              <span class="station-name">RADIO EBENEZER ONLINE</span>
+              <span class="station-tagline">El mensaje de la hora en la red</span>
+            </div>
+
+            <div class="player-controls">
+              <div class="player-meta">
+                <div class="track-title" id="track-title">Transmisión en vivo</div>
+                <div class="track-subtitle" id="track-subtitle">94.7 FM Radio Ebenezer Online</div>
+              </div>
+
+              <div class="player-main">
+                <button id="btn-play-toggle" class="btn btn-primary btn-play" aria-label="Reproducir">
+                  <svg
+                    id="play-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    aria-hidden="true"
+                    class="icon-play-svg"
+                  >
+                    <path
+                      d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+
+                <div class="player-extra">
+                  <button id="btn-volume" class="icon-button" aria-label="Control de volumen">
+                    <span class="icon-svg" aria-hidden="true">
+                      <svg id="volume-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                        <path d="M9 4.5a.5.5 0 0 0-.812-.39L6.825 5.5H4.5A.5.5 0 0 0 4 6v4a.5.5 0 0 0 .5.5h2.325l1.363 1.39A.5.5 0 0 0 9 11.5z" fill="currentColor"/>
+                        <path d="M11.5 5.5a3.5 3.5 0 0 1 0 5" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
+                      </svg>
+                    </span>
+                  </button>
+                  <div class="volume-control">
+                    <input
+                      id="volume-range"
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value="1"
+                      aria-label="Volumen"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="player-status">
+                <span id="player-status-text">Listo para reproducir</span>
+                <span class="status-dot" id="player-status-dot"></span>
+              </div>
+            </div>
+
+            <audio id="radio-audio" preload="none" autoplay></audio>
+          </div>
+        </div>
+        
+        <section class="section section-upcoming" aria-label="Próximas reproducciones">
+          <div class="section-header">
+            <h2>RADIO EBENEZER ONLINE playlists</h2>
+          </div>
+
+          <div id="upcoming-list" class="playlist-grid"></div>
+        </section>
+      </section>
+
+      <section id="screen-search" class="screen" aria-label="Calendario de reuniones">
+        <header class="section-header">
+          <h2>Calendario</h2>
+        </header>
+        <div id="schedule-calendar" class="calendar-wrapper"></div>
+
+        <div class="calendar-legend">
+          <p><strong>Horarios fijos</strong></p>
+          <ul>
+            <li>
+              <span class="calendar-legend-dot calendar-dot--culto"></span>
+              <div class="calendar-legend-text">
+                <strong>Culto en vivo</strong>
+                <span class="calendar-legend-time">9:00 AM · Todos los domingos</span>
+              </div>
+            </li>
+            <li>
+              <span class="calendar-legend-dot calendar-dot--oracion"></span>
+              <div class="calendar-legend-text">
+                <strong>Culto de oración</strong>
+                <span class="calendar-legend-time">3:00 PM · De lunes a viernes</span>
+              </div>
+            </li>
+            <li>
+              <span class="calendar-legend-dot calendar-dot--predicacion"></span>
+              <div class="calendar-legend-text">
+                <strong>Predicación especial</strong>
+                <span class="calendar-legend-time">6:00 PM · Todos los días</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="screen-favorites" class="screen" aria-label="Favoritos">
+        <header class="section-header">
+          <h2>Favoritos</h2>
+        </header>
+        <div id="favorites-list" class="favorites-empty">
+          <p>Tus programas y emisoras favoritas aparecerán aquí.</p>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <button class="bottom-nav-item bottom-nav-item--active" data-target="home" aria-label="Inicio">
+        <span class="icon-svg" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+            <path d="M8 .5 1 7h2v7h4V9h2v5h4V7h2L8 .5z" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="bottom-nav-label">Inicio</span>
+      </button>
+      <button class="bottom-nav-item" data-target="search" aria-label="Calendario">
+        <span class="icon-svg" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="bottom-nav-label">Calendario</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
