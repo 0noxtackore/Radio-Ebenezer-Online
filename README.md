@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Radio Ebenezer Web App
 
 A responsive web radio app for **Radio Ebenezer Online**. It streams the live broadcast, provides a weekly calendar of services, and displays real‑time notifications with countdowns. The UI is optimized for mobile and adapts smoothly to tablets and desktop screens.
@@ -37,3 +38,6 @@ A responsive web radio app for **Radio Ebenezer Online**. It streams the live br
 ## Documentation
 
 See `docs/README.md` for a full documentation index.
+=======
+# Radio-Ebenezer-Online
+>>>>>>> da7e01c5ef72326ea2c333cdb8e3a0d67c8c9e35
