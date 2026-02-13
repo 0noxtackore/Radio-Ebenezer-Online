@@ -1,5 +1,5 @@
 # Radio Ebenezer Web App
-<img src="https://i.ibb.co/JFybRb66/Gemini-Generated-Image-e3wemse3wemse3we.png" alt="Radio Ebenezer Image" width="100%">
+<img src="img/cover.png" alt="Radio Ebenezer Image" width="100%">
 A responsive web application for **Radio Ebenezer Online**. It streams the live broadcast, provides a weekly calendar of services, and displays real-time notifications with countdowns. The interface is optimized for mobile devices and adapts seamlessly to tablets and desktop screens.
 
 ---
