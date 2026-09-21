@@ -73,6 +73,51 @@ const state = {
 };
 
 // -----------------------
+// Schedule events (centralized)
+// -----------------------
+
+const EVENTS = [
+  {
+    id: "culto",
+    title: "Culto en vivo",
+    day: 0, // 0=Sunday
+    startHour: 9,
+    startMin: 0,
+    color: "#ff4d4d",
+    label: "9:00 AM",
+  },
+  {
+    id: "oracion",
+    title: "Culto de oración",
+    day: [1, 2, 3, 4, 5], // Mon-Fri
+    startHour: 15,
+    startMin: 0,
+    color: "#4da6ff",
+    label: "3:00 PM",
+  },
+  {
+    id: "predicacion",
+    title: "Predicación especial",
+    day: "daily",
+    startHour: 18,
+    startMin: 0,
+    color: "#b366ff",
+    label: "6:00 PM",
+  },
+  {
+    id: "jovenes",
+    title: "Clase de Jovenes 1",
+    day: 6, // 6=Saturday
+    startHour: 9,
+    startMin: 30,
+    endHour: 12,
+    endMin: 0,
+    color: "#00e676",
+    label: "9:30 AM - 12:00 PM",
+  },
+];
+
+// -----------------------
 // Player utilities
 // -----------------------
 
@@ -694,8 +739,6 @@ function renderCalendar() {
     const date = new Date(year, month, day);
     const weekDay = date.getDay(); // 0=domingo..6=sábado
 
-    const isSunday = weekDay === 0;
-    const isMonToFri = weekDay >= 1 && weekDay <= 5;
     const isToday = day === todayDate;
     const isPast = day < todayDate;
     const isNextCultoDay = date.toDateString() === nextCultoDate.toDateString();
@@ -703,17 +746,16 @@ function renderCalendar() {
     const dots = [];
     const labels = [];
 
-    if (isSunday) {
-      dots.push("culto"); // culto en vivo
-      labels.push("Culto en vivo · 9:00 AM");
-    }
-    if (isMonToFri) {
-      dots.push("oracion"); // culto de oración
-      labels.push("Culto de oración · 3:00 PM");
-    }
-    // predicación todos los días
-    dots.push("predicacion");
-    labels.push("Predicación especial · 6:00 PM");
+    EVENTS.forEach((ev) => {
+      const matches =
+        ev.day === "daily" ||
+        ev.day === weekDay ||
+        (Array.isArray(ev.day) && ev.day.includes(weekDay));
+      if (matches) {
+        dots.push(ev.id);
+        labels.push(`${ev.title} · ${ev.label}`);
+      }
+    });
 
     const dayClasses = ["calendar-day"]; // base
     if (isToday) dayClasses.push("calendar-day--today");
@@ -789,62 +831,34 @@ function updateDateNotification() {
     return `${hours}h ${minutes}m ${seconds}s`;
   };
 
-  const getNextWeeklyOccurrence = (targetWeekDay, hour, minute) => {
-    const target = new Date(now);
-    target.setHours(hour, minute, 0, 0);
-    let diffDays = (targetWeekDay - now.getDay() + 7) % 7;
-    if (diffDays === 0 && target <= now) {
-      diffDays = 7;
+  const getNextOccurrence = (ev) => {
+    if (ev.day === "daily") {
+      const target = new Date(now);
+      target.setHours(ev.startHour, ev.startMin, 0, 0);
+      if (target <= now) target.setDate(target.getDate() + 1);
+      return target;
     }
-    target.setDate(now.getDate() + diffDays);
-    return target;
+    const targetDays = Array.isArray(ev.day) ? ev.day : [ev.day];
+    let best = null;
+    targetDays.forEach((targetDay) => {
+      const target = new Date(now);
+      target.setHours(ev.startHour, ev.startMin, 0, 0);
+      let diff = (targetDay - now.getDay() + 7) % 7;
+      if (diff === 0 && target <= now) diff = 7;
+      target.setDate(now.getDate() + diff);
+      if (!best || target < best) best = target;
+    });
+    return best;
   };
 
-  const getNextDailyOccurrence = (hour, minute) => {
-    const target = new Date(now);
-    target.setHours(hour, minute, 0, 0);
-    if (target <= now) {
-      target.setDate(target.getDate() + 1);
+  EVENTS.forEach((ev) => {
+    const date = getNextOccurrence(ev);
+    if (date) {
+      events.push({ title: ev.title, date, timeLabel: ev.label });
     }
-    return target;
-  };
+  });
 
-  if (weekDay === 0) {
-    const predicacionDate = getNextDailyOccurrence(18, 0);
-    events.push({
-      title: "Predicación especial",
-      date: predicacionDate,
-      timeLabel: "6:00 PM",
-    });
-
-    const oracionDate = getNextWeeklyOccurrence(1, 15, 0);
-    events.push({
-      title: "Culto de oración",
-      date: oracionDate,
-      timeLabel: "3:00 PM",
-    });
-  } else {
-    const oracionDate = getNextWeeklyOccurrence(weekDay, 15, 0);
-    events.push({
-      title: "Culto de oración",
-      date: oracionDate,
-      timeLabel: "3:00 PM",
-    });
-
-    const cultoDate = getNextWeeklyOccurrence(0, 9, 0);
-    events.push({
-      title: "Culto en vivo",
-      date: cultoDate,
-      timeLabel: "9:00 AM",
-    });
-
-    const predicacionDate = getNextDailyOccurrence(18, 0);
-    events.push({
-      title: "Predicación especial",
-      date: predicacionDate,
-      timeLabel: "6:00 PM",
-    });
-  }
+  events.sort((a, b) => a.date - b.date);
 
   selectors.calendarNotification.style.display = "block";
 
