@@ -3,6 +3,7 @@ import type { ScheduleEvent } from "../types";
 export const STREAM_URL = import.meta.env.VITE_STREAM_URL;
 
 export const YOUTUBE_CHANNEL_HANDLE = import.meta.env.VITE_YOUTUBE_CHANNEL_HANDLE;
+export const YOUTUBE_CHANNEL_ID = import.meta.env.VITE_YOUTUBE_CHANNEL_ID;
 export const YOUTUBE_CHANNEL_URL = `https://www.youtube.com/${YOUTUBE_CHANNEL_HANDLE}`;
 export const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 
