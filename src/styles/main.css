@@ -885,14 +885,15 @@ body {
 
 .notification-youtube {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px;
+  align-items: stretch;
+  gap: 0;
   border-radius: 10px;
+  overflow: hidden;
   background: rgba(255, 0, 0, 0.08);
   border: 1px solid rgba(255, 0, 0, 0.2);
   text-decoration: none;
   transition: background 0.2s, border-color 0.2s;
+  position: relative;
 }
 
 .notification-youtube:hover {
@@ -901,21 +902,28 @@ body {
 }
 
 .notification-youtube-thumb {
-  width: 120px;
-  height: 68px;
+  width: 100%;
+  height: 70px;
   object-fit: cover;
-  border-radius: 8px;
+  object-position: center;
+  display: block;
   flex-shrink: 0;
-  background: #000;
 }
 
 .notification-youtube-label {
+  position: absolute;
+  bottom: 6px;
+  left: 8px;
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #ff4444;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 3px 8px;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
 }
 
 .calendar-notification-footer {

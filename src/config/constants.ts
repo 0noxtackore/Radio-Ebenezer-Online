@@ -6,6 +6,7 @@ export const YOUTUBE_CHANNEL_HANDLE = import.meta.env.VITE_YOUTUBE_CHANNEL_HANDL
 export const YOUTUBE_CHANNEL_ID = import.meta.env.VITE_YOUTUBE_CHANNEL_ID;
 export const YOUTUBE_CHANNEL_URL = `https://www.youtube.com/${YOUTUBE_CHANNEL_HANDLE}`;
 export const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
+export const YOUTUBE_CHANNEL_BANNER = "https://yt3.googleusercontent.com/pvzEJPe6v_8w58wJdeV6R8bsPtxKcjL9zcnQ7iwQK2hxjZXdfU2ZnUeUczygDiwcjY9FbWjcYQ=w1060-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj";
 
 export const ICON_PLAY_PATH =
   "m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393";

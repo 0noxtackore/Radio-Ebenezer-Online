@@ -2,6 +2,7 @@ import {
   YOUTUBE_API_KEY,
   YOUTUBE_CHANNEL_ID,
   YOUTUBE_CHANNEL_URL,
+  YOUTUBE_CHANNEL_BANNER,
 } from "../config/constants";
 
 export interface YouTubeResult {
@@ -12,7 +13,7 @@ export interface YouTubeResult {
 }
 
 const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`;
-const FALLBACK_THUMBNAIL = "/img/logo.png";
+const FALLBACK_THUMBNAIL = YOUTUBE_CHANNEL_BANNER;
 
 function normalizeText(text: string): string {
   return text
