@@ -10,6 +10,8 @@ interface Navigator {
 interface ImportMetaEnv {
   readonly VITE_STREAM_URL: string;
   readonly VITE_API_URL: string;
+  readonly VITE_YOUTUBE_API_KEY: string;
+  readonly VITE_YOUTUBE_CHANNEL_HANDLE: string;
 }
 
 interface ImportMeta {
