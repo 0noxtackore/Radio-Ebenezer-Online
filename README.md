@@ -5,7 +5,7 @@
 <h1 align="center">Radio Ebenezer Online</h1>
 
 <p align="center">
-  Radio Ebenezer 94.7 FM — El mensaje de la hora en la red. Aplicación web para transmisión en vivo, calendario de cultos y notificaciones.
+  Radio Ebenezer — The message of the hour on the web. A web application for live streaming, weekly service calendar, and real-time notifications.
 </p>
 
 <p align="center">
@@ -20,22 +20,22 @@
 
 ## About
 
-Radio Ebenezer Online es una aplicación web moderna para la emisora **Radio Ebenezer 94.7 FM** ("El mensaje de la hora en la red"). Proporciona transmisión en vivo, un calendario semanal de cultos y eventos, notificaciones con cuenta regresiva, y un sistema de gamificación para fidelizar oyentes.
+Radio Ebenezer Online is a modern web application for **Radio Ebenezer** ("The message of the hour on the web"). It provides live streaming, a weekly calendar of services and events, notifications with countdown timers, and a gamification system to engage listeners.
 
-La interfaz es **mobile-first**, responsive, con modo offline detection y recuperación automática. Desplegada en Netlify con CI/CD desde GitHub.
+The interface is **mobile-first**, responsive, with offline detection and automatic recovery. Deployed on Netlify with CI/CD from GitHub.
 
 ## Features
 
 | Feature | Description |
 |---|---|
-| **Live Streaming** | Reproductor con botón play/pause, control de volumen y reconexión automática. |
-| **Calendario Semanal** | Eventos recurrentes (Culto, Oración, Predicación, Jóvenes) con iconos SVG y domingo del día actual marcado. |
-| **Notificaciones** | Avisos de próximos eventos con miniaturas de YouTube (vía RSS), cuenta regresiva estilo "bomba". |
-| **Gamificación** | Puntos, rachas, niveles y 10 logros desbloqueables guardados en localStorage. |
-| **Offline Detection** | Overlay de "Sin conexión" con verificación real de conectividad (fetch a favicon tras 3s). |
-| **YouTube Thumbnails** | Miniaturas de notificaciones desde RSS feed del canal `@tabernaculoebenezer34`, fallback al banner del canal. |
-| **Cuenta Regresiva** | Timer visual estilo bomba (4 bloques: Días/Horas/Min/Seg) con fondo carbono y animación blink. |
-| **Responsive Design** | Navegación desktop (header) + bottom nav mobile, dropdowns, glassmorphism UI. |
+| **Live Streaming** | Player with play/pause, volume control, and automatic reconnection. |
+| **Weekly Calendar** | Recurring events (Worship, Prayer, Preaching, Youth) with SVG icons and current Sunday highlighted. |
+| **Notifications** | Upcoming event alerts with YouTube thumbnails (via RSS), bomb-style countdown timer. |
+| **Gamification** | Points, streaks, levels, and 10 unlockable achievements stored in localStorage. |
+| **Offline Detection** | "Offline" overlay with real connectivity check (fetch to favicon after 3s delay). |
+| **YouTube Thumbnails** | Notification thumbnails from RSS feed of `@tabernaculoebenezer34`, fallback to channel banner. |
+| **Countdown Timer** | Visual bomb-style timer (4 blocks: Days/Hours/Min/Sec) with carbon background and blink animation. |
+| **Responsive Design** | Desktop navigation (header) + mobile bottom nav, dropdowns, glassmorphism UI. |
 
 ## Tech Stack
 
@@ -49,12 +49,12 @@ La interfaz es **mobile-first**, responsive, con modo offline detection y recupe
   <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?logo=githubactions&logoColor=white" />
 </p>
 
-- **Node.js 18+** — Runtime y tooling
-- **TypeScript 5** — Tipado estricto, modular (`src/config`, `src/components`, `src/state`, `src/utils`, `src/types`)
-- **Vite 6** — Dev server (puerto 5504), build optimizado, HMR
-- **CSS3** — Custom properties, glassmorphism, animaciones, grid/flex layouts
-- **Netlify** — Hosting, CI/CD automático, env vars, edge functions ready
-- **GitHub Actions** — (Opcional) Deploy preview / production
+- **Node.js 18+** — Runtime and tooling
+- **TypeScript 5** — Strict typing, modular (`src/config`, `src/components`, `src/state`, `src/utils`, `src/types`)
+- **Vite 6** — Dev server (port 5504), optimized build, HMR
+- **CSS3** — Custom properties, glassmorphism, animations, grid/flex layouts
+- **Netlify** — Hosting, CI/CD, env vars, edge functions ready
+- **GitHub Actions** — (Optional) Deploy preview / production
 
 ## Getting Started
 
@@ -73,7 +73,7 @@ npm install
 
 ### Environment Variables
 
-Crea `.env` basado en `.env.example`:
+Create `.env` based on `.env.example`:
 
 ```env
 VITE_STREAM_URL=https://usa8.fastcast4u.com/proxy/ramonsky?mp=/1
@@ -83,7 +83,7 @@ VITE_YOUTUBE_CHANNEL_HANDLE=@tabernaculoebenezer34
 VITE_YOUTUBE_CHANNEL_ID=UC4T3wvjnujOJrLNWZ5_zyCw
 ```
 
-> **Netlify**: Configura estas 5 variables en *Site settings → Environment variables* y haz *Retry deploy*.
+> **Netlify**: Configure these 5 variables in *Site settings → Environment variables* and trigger *Retry deploy*.
 
 ### Development
 
@@ -91,7 +91,7 @@ VITE_YOUTUBE_CHANNEL_ID=UC4T3wvjnujOJrLNWZ5_zyCw
 npm run dev
 ```
 
-App disponible en `http://localhost:5504` (o el puerto libre que asigne Vite).
+App available at `http://localhost:5504` (or whatever port Vite assigns).
 
 ### Production Build
 
@@ -99,7 +99,7 @@ App disponible en `http://localhost:5504` (o el puerto libre que asigne Vite).
 npm run build
 ```
 
-Genera `dist/` listo para deploy estático.
+Generates `dist/` ready for static deployment.
 
 ### Preview Build
 
@@ -111,38 +111,38 @@ npm run preview
 
 ```
 Radio-Ebenezer-Online/
-├── img/                      # Logos, covers, assets estáticos
+├── img/                      # Logos, covers, static assets
 │   ├── logo_app.png
 │   ├── logo_solid.png
 │   ├── eagle.jpeg
 │   └── logo_app.ico
 ├── src/
 │   ├── components/           # UI components
-│   │   ├── calendar.ts       # Calendario semanal con eventos SVG
-│   │   ├── gamification.ts   # Perfil, puntos, rachas, logros
+│   │   ├── calendar.ts       # Weekly calendar with SVG events
+│   │   ├── gamification.ts   # Profile, points, streaks, achievements
 │   │   ├── network.ts        # Offline overlay + connectivity check
-│   │   ├── notifications.ts  # Avisos, countdown timer, YouTube thumbs
+│   │   ├── notifications.ts  # Alerts, countdown timer, YouTube thumbs
 │   │   └── player.ts         # Audio streaming, volume, reconnect
 │   ├── config/
 │   │   └── constants.ts      # STREAM_URL, EVENTS, YouTube config
 │   ├── state/
-│   │   └── gamification.ts   # Lógica de puntos, rachas, localStorage
+│   │   └── gamification.ts   # Points, streaks, localStorage logic
 │   ├── utils/
 │   │   ├── date.ts           # getCountdownBlocks(), date helpers
 │   │   └── youtube.ts        # RSS parser, thumbnail fetcher
 │   ├── types/
 │   │   └── env.d.ts          # ImportMetaEnv typings
 │   ├── styles/
-│   │   └── main.css          # Estilos globales (1900+ líneas)
+│   │   └── main.css          # Global styles (1900+ lines)
 │   ├── main.ts               # Entry point, init, navigation
-│   └── sw-register.ts        # (Opcional) Service Worker
+│   └── sw-register.ts        # (Optional) Service Worker
 ├── index.html                # Shell HTML, nav, screens, meta
 ├── package.json
 ├── tsconfig.json
 ├── vite.config.ts
 ├── .env                      # Local (gitignored)
-├── .env.example              # Template para deploy
-├── netlify.toml              # Config Netlify (build, headers, redirects)
+├── .env.example              # Template for deploy
+├── netlify.toml              # Netlify config (build, headers, redirects)
 ├── logo_app.ico              # Favicon multi-res (16–256px)
 └── README.md
 ```
@@ -151,30 +151,30 @@ Radio-Ebenezer-Online/
 
 | Command | Description |
 |---|---|
-| `npm run dev` | Inicia servidor de desarrollo (Vite + HMR) |
-| `npm run build` | Compila TypeScript + build de producción (Vite) |
-| `npm run preview` | Sirve `dist/` localmente para probar build |
+| `npm run dev` | Start development server (Vite + HMR) |
+| `npm run build` | Compile TypeScript + production build (Vite) |
+| `npm run preview` | Serve `dist/` locally to test build |
 
 ## Deployment
 
-### Netlify (Recomendado)
+### Netlify (Recommended)
 
-1. Conecta repo en Netlify → *New site from Git*
+1. Connect repo in Netlify → *New site from Git*
 2. Build command: `npm run build`
 3. Publish directory: `dist`
-4. Agrega las 5 `VITE_*` env vars en *Site settings → Environment variables*
+4. Add the 5 `VITE_*` env vars in *Site settings → Environment variables*
 5. *Deploy site*
 
-El `netlify.toml` ya incluye:
+The `netlify.toml` includes:
 - SPA redirect (`/* → /index.html 200`)
-- Headers de seguridad (CSP, HSTS, X-Frame-Options)
-- Cacheo de assets estáticos
+- Security headers (CSP, HSTS, X-Frame-Options)
+- Static asset caching
 
-### Manual (Cualquier estático)
+### Manual (Any Static Host)
 
 ```bash
 npm run build
-# Sube carpeta dist/ a tu hosting (Apache, Nginx, Vercel, Cloudflare Pages, etc.)
+# Upload dist/ folder to your hosting (Apache, Nginx, Vercel, Cloudflare Pages, etc.)
 ```
 
 ## Live Demo
@@ -187,7 +187,7 @@ YouTube: [@tabernaculoebenezer34](https://youtube.com/@tabernaculoebenezer34)
 
 ## License
 
-Distribuido bajo la **Licencia MIT**. Ver [`LICENSE`](LICENSE) para detalles.
+Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
 
 ---
 
