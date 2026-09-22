@@ -249,7 +249,8 @@ body {
 @media (min-width: 768px) {
   .desktop-nav {
     display: flex;
-    gap: 8px;
+    align-items: center;
+    gap: 4px;
   }
 
   .desktop-nav-item {
@@ -273,54 +274,6 @@ body {
     background: var(--color-primary-soft);
     color: var(--color-primary);
     font-weight: 600;
-  }
-
-  .dropdown {
-    position: relative;
-  }
-
-  .dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    min-width: 200px;
-    background: rgba(20, 20, 25, 0.97);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 6px;
-    z-index: 100;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(12px);
-  }
-
-  .dropdown:hover .dropdown-menu {
-    display: block;
-  }
-
-  .dropdown-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border-radius: 6px;
-    color: var(--color-text-muted);
-    font-size: 13px;
-    text-decoration: none;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-
-  .dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
-  }
-
-  .dropdown-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 10px !important;
   }
 }
 
@@ -1448,53 +1401,6 @@ body {
 
 .bottom-nav-label {
   font-size: 11px;
-}
-
-.bottom-nav-dropdown {
-  position: relative;
-  flex: 1;
-}
-
-.bottom-nav-dropdown-menu {
-  display: none;
-  position: absolute;
-  bottom: 100%;
-  right: 0;
-  min-width: 200px;
-  background: rgba(20, 20, 25, 0.97);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  padding: 6px;
-  z-index: 100;
-  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(12px);
-  margin-bottom: 8px;
-}
-
-.bottom-nav-dropdown.is-open .bottom-nav-dropdown-menu {
-  display: block;
-}
-
-.bottom-nav-dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  border-radius: 6px;
-  color: var(--color-text-muted);
-  font-size: 13px;
-  text-decoration: none;
-  transition: all 0.15s;
-  white-space: nowrap;
-}
-
-.bottom-nav-dropdown-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-}
-
-.bottom-nav-menu-btn {
-  color: var(--color-text-muted);
 }
 
 .icon-play::before {

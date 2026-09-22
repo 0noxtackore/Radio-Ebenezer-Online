@@ -12,21 +12,6 @@ import {
   handleCalendarDayClick,
 } from "./components/gamification";
 
-function setupMobileMenu(): void {
-  const toggle = document.getElementById("mobile-menu-toggle");
-  const dropdown = toggle?.closest(".bottom-nav-dropdown");
-  if (!toggle || !dropdown) return;
-
-  toggle.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("is-open");
-  });
-
-  document.addEventListener("click", () => {
-    dropdown.classList.remove("is-open");
-  });
-}
-
 function init(): void {
   initNavigation();
   initPlayer();
@@ -44,8 +29,6 @@ function init(): void {
   setInterval(updateDateNotification, 1000);
 
   setupNetworkMonitoring();
-
-  setupMobileMenu();
 
   attemptAutoplay();
 
