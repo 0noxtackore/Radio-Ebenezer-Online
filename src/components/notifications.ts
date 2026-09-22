@@ -4,6 +4,9 @@ import type { NotificationEvent } from "../types";
 import { buildDayLabel, formatCountdown } from "../utils/date";
 import { searchEventVideo, type YouTubeResult } from "../utils/youtube";
 
+const youtubeCache = new Map<string, YouTubeResult>();
+let renderedOnce = false;
+
 function getNextOccurrence(ev: (typeof EVENTS)[0]): Date | null {
   const now = new Date();
 
@@ -30,7 +33,7 @@ function getNextOccurrence(ev: (typeof EVENTS)[0]): Date | null {
 function buildYouTubeThumb(result: YouTubeResult): string {
   const label = result.isChannelFallback
     ? "Ver canal en YouTube"
-    : "Ver en YouTube";
+    : result.videoTitle || "Ver en YouTube";
   return `
     <a href="${result.videoUrl}" target="_blank" rel="noopener noreferrer" class="notification-youtube">
       <img src="${result.thumbnailUrl}" alt="${label}" class="notification-youtube-thumb" />
@@ -45,58 +48,83 @@ function buildYouTubeThumb(result: YouTubeResult): string {
   `;
 }
 
+function getSortedEvents(): { ev: (typeof EVENTS)[0]; date: Date }[] {
+  const now = new Date();
+  const result: { ev: (typeof EVENTS)[0]; date: Date }[] = [];
+
+  EVENTS.forEach((ev) => {
+    const date = getNextOccurrence(ev);
+    if (date) result.push({ ev, date });
+  });
+
+  result.sort((a, b) => a.date.getTime() - b.date.getTime());
+  return result;
+}
+
 export function updateDateNotification(): void {
   if (!selectors.calendarNotification) return;
 
   const now = new Date();
-  const events: NotificationEvent[] = [];
-
-  EVENTS.forEach((ev) => {
-    const date = getNextOccurrence(ev);
-    if (date) {
-      events.push({ title: ev.title, date, timeLabel: ev.label });
-    }
-  });
-
-  events.sort((a, b) => a.date.getTime() - b.date.getTime());
+  const sorted = getSortedEvents();
 
   selectors.calendarNotification.style.display = "block";
 
-  let html = '<div class="notification-history-container">';
-  let isFirst = true;
+  if (!renderedOnce) {
+    renderedOnce = true;
 
-  events.forEach((ev, index) => {
-    const extraClass = index === 0 ? "" : "calendar-notification--history";
-    const dayLabel = buildDayLabel(ev.date.getDay()).toLowerCase();
-    const countdown = formatCountdown(ev.date.getTime() - now.getTime());
-    const body = `${ev.title} del día ${dayLabel} · ${ev.timeLabel} · ${countdown}`;
+    let html = '<div class="notification-history-container">';
 
-    html += `
-      <div class="calendar-notification ${extraClass}">
-        <div class="calendar-notification-header">
-           <img src="/img/logo.png" alt="" class="notification-logo" />
-           <div class="calendar-notification-title">${ev.title}</div>
+    sorted.forEach(({ ev, date }, index) => {
+      const extraClass = index === 0 ? "" : "calendar-notification--history";
+      const dayLabel = buildDayLabel(date.getDay()).toLowerCase();
+      const countdown = formatCountdown(date.getTime() - now.getTime());
+      const body = `${ev.title} del día ${dayLabel} · ${ev.label} · ${countdown}`;
+
+      html += `
+        <div class="calendar-notification ${extraClass}" data-event-id="${ev.id}">
+          <div class="calendar-notification-header">
+             <img src="/img/logo.png" alt="" class="notification-logo" />
+             <div class="calendar-notification-title">${ev.title}</div>
+          </div>
+          <div class="calendar-notification-body" data-countdown>${body}</div>
+          <div class="notification-youtube-slot" data-index="${index}"></div>
         </div>
-        <div class="calendar-notification-body">${body}</div>
-        <div class="notification-youtube-slot" data-event-title="${ev.title}" data-index="${index}"></div>
-      </div>
-    `;
+      `;
+    });
 
-    if (isFirst) {
-      isFirst = false;
-      searchEventVideo(ev.title).then((result) => {
-        const slot = selectors.calendarNotification?.querySelector(
+    html += "</div>";
+
+    selectors.calendarNotification.className = "";
+    selectors.calendarNotification.innerHTML = html;
+
+    const firstEv = sorted[0];
+    if (firstEv) {
+      const cacheKey = firstEv.ev.title;
+      if (youtubeCache.has(cacheKey)) {
+        const slot = selectors.calendarNotification.querySelector(
           `.notification-youtube-slot[data-index="0"]`
         );
-        if (slot) {
-          slot.innerHTML = buildYouTubeThumb(result);
-        }
-      });
+        if (slot) slot.innerHTML = buildYouTubeThumb(youtubeCache.get(cacheKey)!);
+      } else {
+        searchEventVideo(firstEv.ev.title).then((result) => {
+          youtubeCache.set(cacheKey, result);
+          const slot = selectors.calendarNotification?.querySelector(
+            `.notification-youtube-slot[data-index="0"]`
+          );
+          if (slot) slot.innerHTML = buildYouTubeThumb(result);
+        });
+      }
     }
-  });
-
-  html += "</div>";
-
-  selectors.calendarNotification.className = "";
-  selectors.calendarNotification.innerHTML = html;
+  } else {
+    sorted.forEach(({ ev, date }) => {
+      const el = selectors.calendarNotification?.querySelector(
+        `[data-event-id="${ev.id}"] .calendar-notification-body`
+      );
+      if (el) {
+        const dayLabel = buildDayLabel(date.getDay()).toLowerCase();
+        const countdown = formatCountdown(date.getTime() - now.getTime());
+        el.textContent = `${ev.title} del día ${dayLabel} · ${ev.label} · ${countdown}`;
+      }
+    });
+  }
 }
