@@ -601,6 +601,23 @@ body {
   border-bottom: 1px solid #ffffff;
 }
 
+.track-credit {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
+.track-credit a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.track-credit a:hover {
+  text-decoration: underline;
+}
+
 .player-main {
   margin-top: 10px;
   display: flex;
