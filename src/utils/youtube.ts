@@ -11,33 +11,54 @@ export interface YouTubeResult {
   videoTitle?: string;
 }
 
-const INVIDIOUS_INSTANCES = [
-  "https://inv.nadeko.net",
-  "https://invidious.nerdvpn.de",
-  "https://invidious.private.coffee",
-];
-
+const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`;
 const FALLBACK_THUMBNAIL = "/img/logo.png";
 
-function thumbFromVideoId(videoId: string): string {
-  return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+function normalizeText(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
 }
 
-function normalizeText(text: string): string {
-  return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+interface RSSVideo {
+  videoId: string;
+  title: string;
+  thumbnail: string;
+}
+
+function parseRSSFeed(xmlText: string): RSSVideo[] {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(xmlText, "application/xml");
+  const entries = doc.querySelectorAll("entry");
+  const videos: RSSVideo[] = [];
+
+  entries.forEach((entry) => {
+    const videoId = entry.querySelector("videoId")?.textContent;
+    const title = entry.querySelector("title")?.textContent;
+    const thumbEl = entry.querySelector("thumbnail");
+    const thumbnail = thumbEl?.getAttribute("url") || "";
+
+    if (videoId && title) {
+      videos.push({ videoId, title, thumbnail });
+    }
+  });
+
+  return videos;
 }
 
 function findBestMatch(
-  videoTitles: { title: string; videoId: string; thumbnail: string }[],
+  videos: RSSVideo[],
   eventTitle: string
-): { videoId: string; thumbnail: string; title: string } | null {
+): RSSVideo | null {
   const normalized = normalizeText(eventTitle);
   const keywords = normalized.split(/\s+/).filter((w) => w.length > 2);
 
-  let best = null;
+  let best: RSSVideo | null = null;
   let bestScore = 0;
 
-  for (const video of videoTitles) {
+  for (const video of videos) {
     const vTitle = normalizeText(video.title);
     let score = 0;
     for (const kw of keywords) {
@@ -45,7 +66,7 @@ function findBestMatch(
     }
     if (score > bestScore) {
       bestScore = score;
-      best = { videoId: video.videoId, thumbnail: video.thumbnail, title: video.title };
+      best = video;
     }
   }
 
@@ -65,7 +86,7 @@ async function searchWithYouTubeAPI(eventTitle: string): Promise<YouTubeResult> 
   if (item) {
     return {
       videoUrl: `https://www.youtube.com/watch?v=${item.id.videoId}`,
-      thumbnailUrl: thumbFromVideoId(item.id.videoId),
+      thumbnailUrl: `https://img.youtube.com/vi/${item.id.videoId}/mqdefault.jpg`,
       isChannelFallback: false,
       videoTitle: item.snippet.title,
     };
@@ -78,51 +99,47 @@ async function searchWithYouTubeAPI(eventTitle: string): Promise<YouTubeResult> 
   };
 }
 
-async function searchWithInvidious(eventTitle: string): Promise<YouTubeResult> {
-  for (const instance of INVIDIOUS_INSTANCES) {
-    try {
-      const url = `${instance}/api/v1/channels/${YOUTUBE_CHANNEL_ID}/latest`;
-      const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
-      if (!res.ok) continue;
+async function searchWithRSS(eventTitle: string): Promise<YouTubeResult> {
+  try {
+    const res = await fetch(RSS_URL);
+    if (!res.ok) throw new Error(`RSS ${res.status}`);
 
-      const videos: { title: string; videoId: string; videoThumbnails?: { url: string }[] }[] =
-        await res.json();
+    const xmlText = await res.text();
+    const videos = parseRSSFeed(xmlText);
 
-      if (!videos.length) continue;
-
-      const enriched = videos.map((v) => ({
-        title: v.title,
-        videoId: v.videoId,
-        thumbnail: thumbFromVideoId(v.videoId),
-      }));
-
-      const match = findBestMatch(enriched, eventTitle);
-
-      if (match) {
-        return {
-          videoUrl: `https://www.youtube.com/watch?v=${match.videoId}`,
-          thumbnailUrl: thumbFromVideoId(match.videoId),
-          isChannelFallback: false,
-          videoTitle: match.title,
-        };
-      }
-
+    if (!videos.length) {
       return {
-        videoUrl: `https://www.youtube.com/watch?v=${videos[0].videoId}`,
-        thumbnailUrl: thumbFromVideoId(videos[0].videoId),
-        isChannelFallback: false,
-        videoTitle: videos[0].title,
+        videoUrl: YOUTUBE_CHANNEL_URL,
+        thumbnailUrl: FALLBACK_THUMBNAIL,
+        isChannelFallback: true,
       };
-    } catch {
-      continue;
     }
-  }
 
-  return {
-    videoUrl: YOUTUBE_CHANNEL_URL,
-    thumbnailUrl: FALLBACK_THUMBNAIL,
-    isChannelFallback: true,
-  };
+    const match = findBestMatch(videos, eventTitle);
+
+    if (match) {
+      return {
+        videoUrl: `https://www.youtube.com/watch?v=${match.videoId}`,
+        thumbnailUrl: match.thumbnail,
+        isChannelFallback: false,
+        videoTitle: match.title,
+      };
+    }
+
+    return {
+      videoUrl: `https://www.youtube.com/watch?v=${videos[0].videoId}`,
+      thumbnailUrl: videos[0].thumbnail,
+      isChannelFallback: false,
+      videoTitle: videos[0].title,
+    };
+  } catch (err) {
+    console.warn("RSS feed falló:", err);
+    return {
+      videoUrl: YOUTUBE_CHANNEL_URL,
+      thumbnailUrl: FALLBACK_THUMBNAIL,
+      isChannelFallback: true,
+    };
+  }
 }
 
 export async function searchEventVideo(
@@ -132,9 +149,9 @@ export async function searchEventVideo(
     try {
       return await searchWithYouTubeAPI(eventTitle);
     } catch {
-      console.warn("YouTube API falló, intentando Invidious...");
+      console.warn("YouTube API falló, usando RSS feed...");
     }
   }
 
-  return searchWithInvidious(eventTitle);
+  return searchWithRSS(eventTitle);
 }
