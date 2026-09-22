@@ -838,32 +838,83 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 213, 74, 0.1);
   flex-shrink: 0;
 }
 
-.notification-countdown {
-  display: inline-block;
-  font-family: "Courier New", monospace;
-  font-weight: 900;
-  font-size: 13px;
-  letter-spacing: 2px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid currentColor;
-  margin-left: 8px;
-  text-shadow: 0 0 8px currentColor;
-  box-shadow: 0 0 6px currentColor;
-  animation: bomb-tick 1s ease-in-out infinite;
+.bomb-timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 0;
+  background: radial-gradient(ellipse at center, #1a1a1a 0%, #0d0d0d 70%, #050505 100%);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 213, 74, 0.15);
+  position: relative;
+  overflow: hidden;
 }
 
-@keyframes bomb-tick {
+.bomb-timer::before {
+  content: "%";
+  position: absolute;
+  font-size: 80px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.02);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.bomb-timer-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.bomb-timer-digit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 42px;
+  background: linear-gradient(180deg, #ffe066 0%, #ffd54a 50%, #f9c800 100%);
+  border-radius: 6px;
+  font-family: "Arial Black", "Impact", sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: #1a1a1a;
+  letter-spacing: 2px;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 10px rgba(255, 213, 74, 0.3);
+}
+
+.bomb-timer-label {
+  font-size: 8px;
+  font-weight: 700;
+  color: #ffd54a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.bomb-timer-separator {
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffd54a;
+  margin-bottom: 14px;
+  animation: bomb-blink 1s step-end infinite;
+}
+
+@keyframes bomb-blink {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  50% { opacity: 0.2; }
 }
 
 .calendar-notification-title {
