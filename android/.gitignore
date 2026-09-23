@@ -1,0 +1,19 @@
+# Gradle / Android build output
+.gradle/
+build/
+*/build/
+
+# Local / machine-specific (never commit)
+local.properties
+*.keystore
+*.jks
+
+# Gradle wrapper distribution zip (re-downloaded by gradlew)
+gradle-*-bin.zip
+
+# IDE
+.idea/
+*.iml
+captures/
+.externalNativeBuild/
+.cxx/

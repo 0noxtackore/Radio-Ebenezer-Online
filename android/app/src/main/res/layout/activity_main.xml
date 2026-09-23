@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Verifica tu conexi&oacute;n a internet e int&eacute;ntalo de nuevo."
+            android:text="Verifica tu conexión a internet e intenta nuevamente."
             android:textColor="#AAAAAA"
             android:textSize="14sp"
             android:gravity="center"
