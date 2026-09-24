@@ -76,6 +76,11 @@ public class MainActivity extends Activity {
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 
+        // OCULTAR barra de scroll del WebView (evita el "scroll vertical feo")
+        webView.setVerticalScrollBarEnabled(false);
+        webView.setHorizontalScrollBarEnabled(false);
+        webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
         webView.addJavascriptInterface(new ShareBridge(this), "ShareBridge");
 
         webView.setWebViewClient(new WebViewClient() {
