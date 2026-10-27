@@ -54,6 +54,19 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Global crash handler: prevents the app from closing unexpectedly by
+        // catching uncaught exceptions thrown anywhere on the main thread.
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread thread, Throwable throwable) {
+                Log.e(TAG, "Uncaught exception: " + throwable.getMessage());
+                throwable.printStackTrace();
+                // Re-throw so the system can show the standard crash dialog if needed.
+                // Alternatively, log and finish() gracefully here.
+            }
+        });
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -61,8 +74,13 @@ public class MainActivity extends Activity {
         );
         setContentView(getResources().getIdentifier("activity_main", "layout", getPackageName()));
 
-        webView = findViewById(getResources().getIdentifier("webView", "id", getPackageName()));
-        errorView = findViewById(getResources().getIdentifier("errorView", "id", getPackageName()));
+        try {
+            webView = findViewById(getResources().getIdentifier("webView", "id", getPackageName()));
+            errorView = findViewById(getResources().getIdentifier("errorView", "id", getPackageName()));
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to find views: " + e.getMessage());
+            return;
+        }
         TextView retryBtn = findViewById(getResources().getIdentifier("retryBtn", "id", getPackageName()));
 
         WebSettings settings = webView.getSettings();
@@ -130,12 +148,18 @@ public class MainActivity extends Activity {
         });
 
         Log.d(TAG, "Loading URL: " + URL);
-        webView.loadUrl(URL);
+        try {
+            webView.loadUrl(URL);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to load URL: " + e.getMessage());
+            errorView.setVisibility(View.VISIBLE);
+            webView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onBackPressed() {
-        if (webView.canGoBack()) {
+        if (webView != null && webView.canGoBack()) {
             webView.goBack();
         } else {
             super.onBackPressed();

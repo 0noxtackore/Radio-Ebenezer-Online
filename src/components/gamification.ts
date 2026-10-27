@@ -1,4 +1,4 @@
-import { getGamificationSummary, markAttendance } from "../state/gamification";
+import { getGamificationSummary, markAttendance, localDateKey } from "../state/gamification";
 import { EVENTS } from "../config/constants";
 
 const STAT_ICONS = {
@@ -110,13 +110,20 @@ export function handleCalendarDayClick(day: number, month: number, year: number)
 
   if (!hasEventToday) return;
 
-  const dateStr = date.toISOString().split("T")[0];
-  const todayStr = now.toISOString().split("T")[0];
+  const dateStr = localDateKey(date);
+  const todayStr = localDateKey(now);
   const isToday = dateStr === todayStr;
   const isPast = date < new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   if (isToday || isPast) {
-    markAttendance(EVENTS[0].id);
+    const event =
+      EVENTS.find((ev) => {
+        if (ev.day === "daily") return true;
+        if (ev.day === weekDay) return true;
+        return Array.isArray(ev.day) && ev.day.includes(weekDay);
+      }) ?? EVENTS[0];
+
+    markAttendance(event.id, date);
     renderGamificationProfile();
     if (onAttendanceCallback) onAttendanceCallback();
   }
