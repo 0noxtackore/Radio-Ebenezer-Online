@@ -5,6 +5,7 @@ export const selectors: Selectors = {
     home: document.getElementById("screen-home"),
     search: document.getElementById("screen-search"),
     notifications: document.getElementById("screen-notifications"),
+    testimonios: document.getElementById("screen-testimonios"),
   },
   bottomNavItems: document.querySelectorAll(".bottom-nav-item"),
   desktopNavItems: document.querySelectorAll(".desktop-nav-item"),

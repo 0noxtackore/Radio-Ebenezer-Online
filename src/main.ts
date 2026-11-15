@@ -6,6 +6,7 @@ import { renderCalendar } from "./components/calendar";
 import { updateDateNotification } from "./components/notifications";
 import { setupNetworkMonitoring } from "./components/network";
 import { initDiscArtwork } from "./components/disc";
+import { initTestimonios } from "./components/testimonios";
 import {
   renderGamificationProfile,
   setGamificationContainer,
@@ -13,6 +14,7 @@ import {
 } from "./components/gamification";
 
 function init(): void {
+  initTestimonios();
   initNavigation();
   initPlayer();
 
