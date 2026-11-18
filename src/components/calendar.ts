@@ -1,7 +1,6 @@
 import { selectors } from "../utils/dom";
 import { EVENTS } from "../config/constants";
 import { MONTH_NAMES, DOW_LABELS } from "../utils/date";
-import { loadGamificationState, localDateKey } from "../state/gamification";
 
 const EVENT_ICONS: Record<string, string> = {
   culto: `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/></svg>`,
@@ -37,8 +36,6 @@ export function renderCalendar(): void {
     nextCultoDate.setDate(todayDateOnly.getDate() + daysUntilNextSunday);
   }
 
-  const gamification = loadGamificationState();
-
   let html = "";
   html += '<div class="calendar-header">';
   html += `<div class="calendar-month">${MONTH_NAMES[month]} ${year}</div>`;
@@ -61,9 +58,6 @@ export function renderCalendar(): void {
     const isPast = day < todayDate;
     const isNextCultoDay =
       date.toDateString() === nextCultoDate.toDateString();
-
-    const dateStr = localDateKey(date);
-    const isAttended = gamification.attendanceDates.includes(dateStr);
 
     const startOfWeek = new Date(now);
     startOfWeek.setDate(now.getDate() - now.getDay());
@@ -91,7 +85,6 @@ export function renderCalendar(): void {
     if (isPast) dayClasses.push("calendar-day--past");
     if (dots.length) dayClasses.push("calendar-day--with-events");
     if (isNextCultoDay) dayClasses.push("calendar-day--next-culto");
-    if (isAttended) dayClasses.push("calendar-day--attended");
     if (isCurrentWeekSunday) dayClasses.push("calendar-day--sunday-marked");
     if (isCurrentWeekDay) dayClasses.push("calendar-day--current-week");
 
@@ -108,9 +101,6 @@ export function renderCalendar(): void {
       html += `<span class="calendar-icon calendar-icon--${type}">${EVENT_ICONS[type]}</span>`;
     });
     html += "</div>";
-    if (isAttended) {
-      html += '<span class="calendar-check">✓</span>';
-    }
     html += "</div>";
   }
 

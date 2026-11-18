@@ -20,7 +20,7 @@
 
 ## About
 
-Radio Ebenezer Online is a modern web application for **Radio Ebenezer** ("The message of the hour on the web"). It provides live streaming, a weekly calendar of services and events, notifications with countdown timers, and a gamification system to engage listeners.
+Radio Ebenezer Online is a modern web application for **Radio Ebenezer** ("The message of the hour on the web"). It provides live streaming, a weekly calendar of services and events, and notifications with countdown timers.
 
 The interface is **mobile-first**, responsive, with offline detection and automatic recovery. Deployed on Netlify with CI/CD from GitHub.
 
@@ -31,7 +31,6 @@ The interface is **mobile-first**, responsive, with offline detection and automa
 | **Live Streaming** | Player with play/pause, volume control, and automatic reconnection. |
 | **Weekly Calendar** | Recurring events (Worship, Prayer, Preaching, Youth) with SVG icons and current Sunday highlighted. |
 | **Notifications** | Upcoming event alerts with YouTube thumbnails (via RSS), bomb-style countdown timer. |
-| **Gamification** | Points, streaks, levels, and 10 unlockable achievements stored in localStorage. |
 | **Offline Detection** | "Offline" overlay with real connectivity check (fetch to favicon after 3s delay). |
 | **YouTube Thumbnails** | Notification thumbnails from RSS feed of `@tabernaculoebenezer34`, fallback to channel banner. |
 | **Countdown Timer** | Visual bomb-style timer (4 blocks: Days/Hours/Min/Sec) with carbon background and blink animation. |
@@ -119,14 +118,13 @@ Radio-Ebenezer-Online/
 ├── src/
 │   ├── components/           # UI components
 │   │   ├── calendar.ts       # Weekly calendar with SVG events
-│   │   ├── gamification.ts   # Profile, points, streaks, achievements
 │   │   ├── network.ts        # Offline overlay + connectivity check
 │   │   ├── notifications.ts  # Alerts, countdown timer, YouTube thumbs
 │   │   └── player.ts         # Audio streaming, volume, reconnect
 │   ├── config/
 │   │   └── constants.ts      # STREAM_URL, EVENTS, YouTube config
 │   ├── state/
-│   │   └── gamification.ts   # Points, streaks, localStorage logic
+│   │   └── app-state.ts      # Player/app state
 │   ├── utils/
 │   │   ├── date.ts           # getCountdownBlocks(), date helpers
 │   │   └── youtube.ts        # RSS parser, thumbnail fetcher
