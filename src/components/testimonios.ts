@@ -36,6 +36,11 @@ export function closeTestimonio(): void {
 }
 
 export function initTestimonios(): void {
+  document.querySelectorAll<HTMLElement>(".testimonios-images").forEach((container) => {
+    container.addEventListener("contextmenu", (e) => e.preventDefault());
+    container.addEventListener("dragstart", (e) => e.preventDefault());
+  });
+
   const modal = document.getElementById("testimonio-modal");
   const closeBtn = document.getElementById("testimonio-modal-close");
   if (!modal || !closeBtn) return;

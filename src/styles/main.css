@@ -64,6 +64,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -348,10 +349,9 @@ body {
 .app-main {
   flex: 1;
   /* Mobile Viewport Fix: Exact height available */
-  /* Mobile Viewport Fix: Exact height available */
   height: calc(100dvh - var(--header-height) - var(--bottom-nav-height));
   overflow-y: auto;
-  overflow-y: auto;
+  overscroll-behavior: contain;
   /* Allow scroll if content overflows, though we aim for fit */
   padding: 16px;
   padding-bottom: calc(var(--bottom-nav-height) + 16px + env(safe-area-inset-bottom));
@@ -1429,8 +1429,8 @@ body {
   .app-main {
     max-width: 1400px;
     /* Wider container */
-    margin: 32px auto 80px;
-    padding: 0 40px;
+    margin: 0 auto;
+    padding: 32px 40px calc(var(--bottom-nav-height) + 24px);
   }
   /* Two-column layout: player left, upcoming plays right */
   #screen-home.screen--active {
@@ -1566,7 +1566,7 @@ body {
 /* Tall Screens Optimization (min-height: 900px) */
 @media (min-height: 900px) and (min-width: 1024px) {
   .app-main {
-    margin-top: 60px;
+    padding-top: 60px;
     /* Push content down slightly */
     display: flex;
     flex-direction: column;
@@ -1616,6 +1616,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 22px;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .testimonios-images img {
@@ -1624,6 +1626,11 @@ body {
   height: auto;
   border-radius: var(--radius-lg);
   box-shadow: 0 16px 38px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
 }
 
 .testimonio-grid {
