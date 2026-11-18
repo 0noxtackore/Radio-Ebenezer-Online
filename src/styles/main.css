@@ -64,7 +64,6 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden;
 }
 
 body {
@@ -351,7 +350,6 @@ body {
   /* Mobile Viewport Fix: Exact height available */
   height: calc(100dvh - var(--header-height) - var(--bottom-nav-height));
   overflow-y: auto;
-  overscroll-behavior: contain;
   /* Allow scroll if content overflows, though we aim for fit */
   padding: 16px;
   padding-bottom: calc(var(--bottom-nav-height) + 16px + env(safe-area-inset-bottom));
