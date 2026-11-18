@@ -1681,39 +1681,6 @@ body {
   vertical-align: -8px;
 }
 
-.testimonio-card--featured {
-  background: linear-gradient(140deg, rgba(255, 213, 74, 0.14), rgba(30, 30, 35, 0.95) 45%, rgba(20, 20, 25, 0.98));
-  border: 1px solid rgba(255, 213, 74, 0.45);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.55);
-  padding: 30px;
-  position: relative;
-}
-
-.testimonio-card--featured::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(to right, var(--color-primary), var(--color-accent), var(--color-primary));
-  background-size: 200% 100%;
-  box-shadow: 0 0 20px rgba(255, 213, 74, 0.7);
-}
-
-.testimonio-card--featured:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 32px 70px rgba(0, 0, 0, 0.65), 0 0 46px rgba(255, 213, 74, 0.22);
-}
-
-.testimonio-card--featured .testimonio-card-text {
-  line-height: 1.8;
-  text-align: justify;
-  color: var(--color-text);
-  font-size: 15px;
-}
-
 .testimonio-card-full {
   display: none;
 }
