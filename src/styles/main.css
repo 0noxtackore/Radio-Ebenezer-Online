@@ -627,12 +627,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, rgba(255, 213, 74, 0.12), rgba(20, 20, 25, 0.96));
-  border: 1px solid rgba(255, 213, 74, 0.3);
+  background-color: rgba(0, 0, 0, 0.86);
+  /* same as cover-label */
   border-radius: 16px;
-  padding: 0 16px;
-  backdrop-filter: blur(12px);
-  transition: transform var(--transition-med), box-shadow var(--transition-med);
 }
 
 .player-main:hover {
@@ -765,32 +762,12 @@ body {
 }
 
 .player-status {
-  text-align: center;
-  margin-top: 8px;
-  gap: 6px;
+  margin-top: 12px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-}
-
-.player-status .status-dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-live-neon);
-  margin-left: 4px;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
+  gap: 6px;
+  font-size: 12px;
+  color: var(--color-text-muted);
 }
 
 .status-dot {
