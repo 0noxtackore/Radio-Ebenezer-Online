@@ -101,6 +101,14 @@ export function closeTestimonio(): void {
 export function initTestimonios(): void {
   refreshTestimonioVerse();
 
+  // Click handler para imagen fullscreen en galería de testimonios
+  document.querySelectorAll<HTMLElement>(".testimonios-images img").forEach((img) => {
+    img.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openTestimonioFullscreen(img);
+    });
+  });
+
   document.querySelectorAll<HTMLElement>(".testimonios-images").forEach((container) => {
     container.addEventListener("contextmenu", (e) => e.preventDefault());
     container.addEventListener("dragstart", (e) => e.preventDefault());
@@ -123,4 +131,43 @@ export function initTestimonios(): void {
       if (card) openTestimonioFromCard(card);
     });
   });
+}
+
+export function openTestimonioFullscreen(img: HTMLImageElement): void {
+  const modal = document.getElementById("testimonio-modal");
+  if (!modal) return;
+
+  // Poblar el modal con la imagen clickeada
+  const modalImg = modal.querySelector<HTMLElement>("#testimonio-modal-img");
+  if (modalImg) {
+    modalImg.src = img.src;
+    modalImg.alt = img.alt;
+  }
+
+  // Activar modo galería (solo imagen, sin título/autor)
+  modal.classList.add("testimonio-modal--galeria");
+
+  // Mostrar el modal
+  modal.hidden = false;
+  document.body.classList.add("testimonio-modal-open");
+}
+
+// Mantener la función existente para compatibilidad
+export function openTestimonioFromCard(card: HTMLElement): void {
+  const modal = document.getElementById("testimonio-modal");
+  const titleEl = modal?.querySelector<HTMLElement>("#testimonio-modal-title");
+  if (!modal || !titleEl) return;
+
+  const title = card.querySelector<HTMLElement>(".testimonio-card-name");
+  const img = card.querySelector<HTMLImageElement>(".testimonio-card-img");
+  if (title) titleEl.textContent = title.textContent ?? "";
+  if (img && modal.querySelector<HTMLElement>("#testimonio-modal-img")) {
+    ;// modal.querySelector<HTMLElement>("#testimonio-modal-img").src = img.src;
+  }
+
+  lastOpenedCard = card;
+  modal.hidden = false;
+  document.body.classList.add("testimonio-modal-open");
+  const btn = card.querySelector<HTMLElement>(".testimonio-toggle");
+  if (btn) btn.setAttribute("aria-expanded", "true");
 }
