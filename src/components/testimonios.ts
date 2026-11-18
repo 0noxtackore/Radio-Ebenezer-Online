@@ -2,6 +2,69 @@ import { selectors } from "../utils/dom";
 
 let lastOpenedCard: HTMLElement | null = null;
 
+interface TestimonioVerse {
+  text: string;
+  ref: string;
+}
+
+const TESTIMONIO_VERSES: TestimonioVerse[] = [
+  {
+    text: "Y ellos le han vencido por medio de la sangre del Cordero y de la palabra del testimonio que tenían.",
+    ref: "Apocalipsis 12:11",
+  },
+  {
+    text: "Venid, oíd, todos los que de Dios teméis; contaré lo que ha hecho a mi alma.",
+    ref: "Salmo 66:16",
+  },
+  {
+    text: "Grandes cosas ha hecho Jehová con nosotros; estaremos alegres.",
+    ref: "Salmo 126:3",
+  },
+  {
+    text: "Te alabaré, oh Jehová, con todo mi corazón; contaré todas tus maravillas.",
+    ref: "Salmo 9:1",
+  },
+  {
+    text: "Este es el testimonio: que Dios nos ha dado vida eterna; y esta vida está en su Hijo.",
+    ref: "1 Juan 5:11",
+  },
+  {
+    text: "Estad siempre preparados para presentar defensa con mansedumbre y reverencia ante todo el que os demande razón de la esperanza que hay en vosotros.",
+    ref: "1 Pedro 3:15",
+  },
+  {
+    text: "Lo que hemos visto y oído, eso os anunciamos, para que también vosotros tengáis comunión con nosotros.",
+    ref: "1 Juan 1:3",
+  },
+  {
+    text: "Porque no me avergüenzo del evangelio, porque es poder de Dios para salvación a todo aquel que cree.",
+    ref: "Romanos 1:16",
+  },
+];
+
+let lastVerseIndex = -1;
+
+export function refreshTestimonioVerse(): void {
+  const el = document.getElementById("testimonios-verse");
+  if (!el) return;
+
+  let index = Math.floor(Math.random() * TESTIMONIO_VERSES.length);
+  if (TESTIMONIO_VERSES.length > 1 && index === lastVerseIndex) {
+    index = (index + 1) % TESTIMONIO_VERSES.length;
+  }
+  lastVerseIndex = index;
+  const verse = TESTIMONIO_VERSES[index];
+
+  el.textContent = "";
+  const text = document.createElement("span");
+  text.className = "testimonios-verse-text";
+  text.textContent = `\u201C${verse.text}\u201D`;
+  const ref = document.createElement("span");
+  ref.className = "testimonios-verse-ref";
+  ref.textContent = verse.ref;
+  el.append(text, ref);
+}
+
 export function getTestimonioModal(): HTMLElement | null {
   return document.getElementById("testimonio-modal");
 }
@@ -36,6 +99,8 @@ export function closeTestimonio(): void {
 }
 
 export function initTestimonios(): void {
+  refreshTestimonioVerse();
+
   document.querySelectorAll<HTMLElement>(".testimonios-images").forEach((container) => {
     container.addEventListener("contextmenu", (e) => e.preventDefault());
     container.addEventListener("dragstart", (e) => e.preventDefault());

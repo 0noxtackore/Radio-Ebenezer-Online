@@ -1,6 +1,10 @@
 import { selectors } from "../utils/dom";
+import { refreshTestimonioVerse } from "./testimonios";
 
 export function switchScreen(targetKey: string): void {
+  document.documentElement.classList.toggle("testimonios-active", targetKey === "testimonios");
+  if (targetKey === "testimonios") refreshTestimonioVerse();
+
   Object.entries(selectors.screens).forEach(([key, el]) => {
     el?.classList.toggle("screen--active", key === targetKey);
   });

@@ -544,6 +544,8 @@ body {
   flex-direction: column;
   gap: 4px;
   margin-bottom: 10px;
+  align-items: center;
+  text-align: center;
 }
 
 .badge-live {
@@ -557,6 +559,10 @@ body {
   background: var(--color-primary-soft);
   color: var(--color-live-neon);
   border: 1px solid var(--color-primary);
+}
+
+.cover-label .badge-live {
+  align-self: center;
 }
 
 .station-name {
@@ -576,6 +582,7 @@ body {
 
 .player-meta {
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .track-title {
@@ -1609,6 +1616,59 @@ body {
 /* ========================
    Testimonios Styles
    ======================== */
+
+#screen-testimonios .section-header {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+#screen-testimonios .section-header h2 {
+  margin: 0;
+  font-size: clamp(28px, 6vw, 42px);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.testimonios-verse {
+  margin: 0;
+  max-width: 720px;
+  font-size: 14px;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.testimonios-verse-ref {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+/* Hide the scrollbar while viewing Testimonios */
+html.testimonios-active,
+html.testimonios-active body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html.testimonios-active::-webkit-scrollbar,
+html.testimonios-active body::-webkit-scrollbar,
+html.testimonios-active .app-main::-webkit-scrollbar {
+  display: none;
+}
+
+html.testimonios-active .app-main {
+  scrollbar-width: none;
+}
 
 .testimonios-images {
   display: flex;
