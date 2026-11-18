@@ -1612,6 +1612,20 @@ body {
    Testimonios Styles
    ======================== */
 
+.testimonios-images {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.testimonios-images img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.45);
+}
+
 .testimonio-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
