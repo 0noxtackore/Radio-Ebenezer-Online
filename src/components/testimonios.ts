@@ -72,13 +72,15 @@ export function getTestimonioModal(): HTMLElement | null {
 export function openTestimonioFromCard(card: HTMLElement): void {
   const modal = document.getElementById("testimonio-modal");
   const titleEl = modal?.querySelector<HTMLElement>("#testimonio-modal-title");
-  const modalImg = modal?.querySelector<HTMLImageElement>("#testimonio-modal-img");
   if (!modal || !titleEl) return;
 
   const title = card.querySelector<HTMLElement>(".testimonio-card-name");
+  const modalImgEl = modal?.querySelector<HTMLElement>("#testimonio-modal-img");
+  if (!modalImgEl) return;
+  const modalImg = modalImgEl as HTMLImageElement;
   const img = card.querySelector<HTMLImageElement>(".testimonio-card-img");
   if (title) titleEl.textContent = title.textContent ?? "";
-  if (img && modalImg) modalImg.src = img.src;
+  if (img) modalImg.src = img.src;
 
   lastOpenedCard = card;
   modal.hidden = false;
@@ -102,7 +104,7 @@ export function initTestimonios(): void {
   refreshTestimonioVerse();
 
   // Click handler para imagen fullscreen en galería de testimonios
-  document.querySelectorAll<HTMLElement>(".testimonios-images img").forEach((img) => {
+  document.querySelectorAll<HTMLImageElement>(".testimonios-images img").forEach((img) => {
     img.addEventListener("click", (e) => {
       e.stopPropagation();
       openTestimonioFullscreen(img);
@@ -138,7 +140,8 @@ export function openTestimonioFullscreen(img: HTMLImageElement): void {
   if (!modal) return;
 
   // Poblar el modal con la imagen clickeada
-  const modalImg = modal.querySelector<HTMLElement>("#testimonio-modal-img");
+  const modalImgEl = modal.querySelector<HTMLElement>("#testimonio-modal-img");
+  const modalImg = modalImgEl instanceof HTMLImageElement ? modalImgEl : modal.querySelector<HTMLImageElement>("#testimonio-modal-img");
   if (modalImg) {
     modalImg.src = img.src;
     modalImg.alt = img.alt;
@@ -150,24 +153,4 @@ export function openTestimonioFullscreen(img: HTMLImageElement): void {
   // Mostrar el modal
   modal.hidden = false;
   document.body.classList.add("testimonio-modal-open");
-}
-
-// Mantener la función existente para compatibilidad
-export function openTestimonioFromCard(card: HTMLElement): void {
-  const modal = document.getElementById("testimonio-modal");
-  const titleEl = modal?.querySelector<HTMLElement>("#testimonio-modal-title");
-  if (!modal || !titleEl) return;
-
-  const title = card.querySelector<HTMLElement>(".testimonio-card-name");
-  const img = card.querySelector<HTMLImageElement>(".testimonio-card-img");
-  if (title) titleEl.textContent = title.textContent ?? "";
-  if (img && modal.querySelector<HTMLElement>("#testimonio-modal-img")) {
-    ;// modal.querySelector<HTMLElement>("#testimonio-modal-img").src = img.src;
-  }
-
-  lastOpenedCard = card;
-  modal.hidden = false;
-  document.body.classList.add("testimonio-modal-open");
-  const btn = card.querySelector<HTMLElement>(".testimonio-toggle");
-  if (btn) btn.setAttribute("aria-expanded", "true");
 }
