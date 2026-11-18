@@ -9,13 +9,13 @@ export function getTestimonioModal(): HTMLElement | null {
 export function openTestimonioFromCard(card: HTMLElement): void {
   const modal = document.getElementById("testimonio-modal");
   const titleEl = modal?.querySelector<HTMLElement>("#testimonio-modal-title");
-  const textEl = modal?.querySelector<HTMLElement>("#testimonio-modal-text");
-  if (!modal || !titleEl || !textEl) return;
+  const modalImg = modal?.querySelector<HTMLImageElement>("#testimonio-modal-img");
+  if (!modal || !titleEl) return;
 
   const title = card.querySelector<HTMLElement>(".testimonio-card-name");
-  const text = card.querySelector<HTMLElement>(".testimonio-card-text");
+  const img = card.querySelector<HTMLImageElement>(".testimonio-card-img");
   if (title) titleEl.textContent = title.textContent ?? "";
-  if (text) textEl.textContent = text.textContent ?? "";
+  if (img && modalImg) modalImg.src = img.src;
 
   lastOpenedCard = card;
   modal.hidden = false;

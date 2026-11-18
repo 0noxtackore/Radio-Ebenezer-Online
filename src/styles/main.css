@@ -1718,6 +1718,14 @@ body {
   display: none;
 }
 
+.testimonio-card-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 4px;
+  border-radius: var(--radius-lg);
+}
+
 .testimonio-resumen {
   margin: 0 0 16px;
   font-size: 14px;
@@ -1825,6 +1833,13 @@ body {
 .testimonio-modal-content {
   scrollbar-width: thin;
   scrollbar-color: var(--color-primary) rgba(255, 255, 255, 0.06);
+}
+
+.testimonio-modal-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
 }
 
 @keyframes testimonioModalIn {
