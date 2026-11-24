@@ -74,6 +74,8 @@ export function openTestimonioFromCard(card: HTMLElement): void {
   const titleEl = modal?.querySelector<HTMLElement>("#testimonio-modal-title");
   if (!modal || !titleEl) return;
 
+  modal.classList.remove("testimonio-modal--galeria");
+
   const title = card.querySelector<HTMLElement>(".testimonio-card-name");
   const modalImgEl = modal?.querySelector<HTMLElement>("#testimonio-modal-img");
   if (!modalImgEl) return;
@@ -93,6 +95,7 @@ export function closeTestimonio(): void {
   const modal = document.getElementById("testimonio-modal");
   if (!modal) return;
   modal.hidden = true;
+  modal.classList.remove("testimonio-modal--galeria");
   document.body.classList.remove("testimonio-modal-open");
   const card = lastOpenedCard;
   const btn = card?.querySelector<HTMLElement>(".testimonio-toggle");
@@ -122,6 +125,9 @@ export function initTestimonios(): void {
 
   modal.querySelector<HTMLElement>(".testimonio-modal-overlay")?.addEventListener("click", closeTestimonio);
   closeBtn.addEventListener("click", closeTestimonio);
+  modal.querySelector<HTMLElement>("#testimonio-modal-img")?.addEventListener("click", () => {
+    if (modal.classList.contains("testimonio-modal--galeria")) closeTestimonio();
+  });
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeTestimonio();

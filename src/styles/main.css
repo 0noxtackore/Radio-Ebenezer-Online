@@ -1689,11 +1689,17 @@ html.testimonios-active .app-main {
   height: auto;
   border-radius: var(--radius-lg);
   box-shadow: 0 16px 38px rgba(0, 0, 0, 0.45);
-  pointer-events: none;
+  cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
   -webkit-user-drag: none;
   -webkit-touch-callout: none;
+  transition: transform var(--transition-med), box-shadow var(--transition-med);
+}
+
+.testimonios-images img:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.55);
 }
 
 .testimonio-grid {
@@ -1862,23 +1868,34 @@ html.testimonios-active .app-main {
 }
 
 /* Galería mode - only image */
+.testimonio-modal--galeria {
+  padding: 0;
+}
+
 .testimonio-modal--galeria .testimonio-modal-content {
-  max-width: none;
-  max-height: none;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   background: transparent;
   border: none;
   border-radius: 0;
   padding: 0;
   box-shadow: none;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .testimonio-modal--galeria .testimonio-modal-content img {
   max-width: 100vw;
   max-height: 100vh;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   border-radius: 0;
   object-fit: contain;
+  cursor: pointer;
 }
 
 .testimonio-modal--galeria #testimonio-modal-title,
@@ -1887,7 +1904,15 @@ html.testimonios-active .app-main {
 }
 
 .testimonio-modal--galeria .testimonio-modal-overlay {
+  background: rgba(0, 0, 0, 0.94);
   backdrop-filter: blur(8px);
+}
+
+.testimonio-modal--galeria .testimonio-modal-close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
 }
 
 /* Custom scrollbar for the modal content */
